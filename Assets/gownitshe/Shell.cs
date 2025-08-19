@@ -13,14 +13,16 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         TankHealth target = collision.gameObject.GetComponentInParent<TankHealth>();
-        if (target != null ) 
+        if (target != null)
         {
+            // play damage sound from the tank, not the bullet
+            TankAudio audio = collision.gameObject.GetComponentInParent<TankAudio>();
+            if (audio != null)
+                audio.PlayDamage();
 
             target.TakeDamage(damage);
         }
-      
 
-        // Always destroy bullet after hit (or after some seconds)
         Destroy(gameObject);
     }
 }
