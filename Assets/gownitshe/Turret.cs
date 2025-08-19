@@ -4,31 +4,19 @@ public class TurretController : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Center of rotation. If left empty, a child named 'Pivot' (case-insensitive) will be used.")]
-    public Transform pivot;
+    public Transform pivot;   // Hinge for gun elevation
+    public Transform gun;     // The Gun object (child of Pivot)
 
     [Header("Settings")]
-    public float yawSpeed = 120f;          // degrees per second
-    public bool lockAndHideCursor = true;  // because menus are for cowards
+    public float yawSpeed = 200f;     // deg/sec
+    public float pitchSpeed = 30f;    // deg/sec
+    public float minPitch = -5f;      // down limit
+    public float maxPitch = 30f;      // up limit
+    public bool lockAndHideCursor = true;
 
-    void Awake()
-    {
-        // Auto-find a child named "Pivot" if you didn't drag one in
-        if (pivot == null)
-        {
-            foreach (Transform t in GetComponentsInChildren<Transform>(true))
-            {
-                if (string.Equals(t.name, "Pivot", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    pivot = t;
-                    break;
-                }
-            }
-        }
+    private float currentPitch;
 
-        if (pivot == null)
-            Debug.LogError("[TurretController] No pivot assigned and no child named 'Pivot' found.", this);
-    }
-
+    
     void OnEnable()
     {
         if (lockAndHideCursor)
@@ -49,21 +37,31 @@ public class TurretController : MonoBehaviour
 
     void Update()
     {
-        // Quick unlock for testing
+        // ESC unlock for testing
         if (lockAndHideCursor && Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
-        if (pivot == null) return;
+        if (pivot == null || gun == null) return;
 
+        // --- YAW (Turret rotation) ---
         float mouseX = Input.GetAxis("Mouse X");
         if (Mathf.Abs(mouseX) > Mathf.Epsilon)
         {
-            float angle = mouseX * yawSpeed * Time.deltaTime;
-            // Rotate *morda* around the pivot's UP axis (local Y)
-            transform.RotateAround(pivot.position, pivot.up, angle);
+            float yaw = mouseX * yawSpeed * Time.deltaTime;
+            transform.RotateAround(pivot.position, pivot.up, yaw);
+        }
+
+        // --- PITCH (Gun elevation) ---
+        float mouseY = Input.GetAxis("Mouse Y");
+        if (Mathf.Abs(mouseY) > Mathf.Epsilon)
+        {
+            currentPitch -= mouseY * pitchSpeed * Time.deltaTime;
+            currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
+
+            gun.localRotation = Quaternion.Euler(currentPitch, 0f, 0f);
         }
     }
 }
