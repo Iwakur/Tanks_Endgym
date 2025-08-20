@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
 {
     public float lifetime = 5f;
     public int damage = 25;
+    public GameObject explosionPrefab;
 
     void Start()
     {
@@ -21,6 +22,12 @@ public class Bullet : MonoBehaviour
                 audio.PlayDamage();
 
             target.TakeDamage(damage);
+        }
+
+        if (explosionPrefab != null)
+        {
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(explosion, 3f); // cleanup
         }
 
         Destroy(gameObject);

@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifetime: 5
   damage: 25
+  explosionPrefab: {fileID: 3345248989584403936, guid: 6b5e9c3dedde64240ac58831af0e3754, type: 3}
 --- !u!54 &5416355371527973370
 Rigidbody:
   m_ObjectHideFlags: 0

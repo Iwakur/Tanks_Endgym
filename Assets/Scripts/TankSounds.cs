@@ -1,30 +1,39 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public class TankAudio : MonoBehaviour
 {
     [Header("Clips")]
     public AudioClip rollingSound;
+    public AudioClip headRotateSound;
     public AudioClip shotSound;
     public AudioClip reloadSound;
     public AudioClip damageSound;
-    public AudioClip headRotateSound;
 
     [Header("Settings")]
-    public float fadeSpeed = 5f; // how fast rolling/rotation fade in/out
+    [Range(0f, 1f)] public float rollingVolume = 1f;
+    [Range(0f, 1f)] public float rotateVolume = 1f;
+    [Range(0f, 1f)] public float sfxVolume = 1f;
+    public float fadeSpeed = 5f;
 
-    private AudioSource loopSource;   // for rolling & turret hum
-    private AudioSource sfxSource;    // for shots/reload/damage
-    private bool isRolling;
-    private bool isRotating;
+    private AudioSource rollingSource;
+    private AudioSource rotateSource;
+    private AudioSource sfxSource;
 
     void Awake()
     {
-        // Create 2 audio sources
-        loopSource = gameObject.AddComponent<AudioSource>();
-        loopSource.loop = true;
-        loopSource.playOnAwake = false;
+        // Rolling (engine)
+        rollingSource = gameObject.AddComponent<AudioSource>();
+        rollingSource.loop = true;
+        rollingSource.playOnAwake = false;
+        rollingSource.clip = rollingSound;
 
+        // Rotating (turret)
+        rotateSource = gameObject.AddComponent<AudioSource>();
+        rotateSource.loop = true;
+        rotateSource.playOnAwake = false;
+        rotateSource.clip = headRotateSound;
+
+        // One-shot SFX (shots, reloads, damage)
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.loop = false;
         sfxSource.playOnAwake = false;
@@ -32,65 +41,43 @@ public class TankAudio : MonoBehaviour
 
     void Update()
     {
-        HandleRollingSound();
-        HandleHeadRotateSound();
+        HandleRolling();
+        HandleRotation();
     }
 
-    void HandleRollingSound()
+    void HandleRolling()
     {
-        bool moving = Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f || Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f;
+        bool moving = Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f
+                   || Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f;
 
-        if (moving)
-        {
-            if (!isRolling)
-            {
-                loopSource.clip = rollingSound;
-                loopSource.volume = 0f;
-                loopSource.Play();
-                isRolling = true;
-            }
-            loopSource.volume = Mathf.Lerp(loopSource.volume, 1f, fadeSpeed * Time.deltaTime);
-        }
-        else if (isRolling)
-        {
-            loopSource.volume = Mathf.Lerp(loopSource.volume, 0f, fadeSpeed * Time.deltaTime);
-            if (loopSource.volume < 0.05f)
-            {
-                loopSource.Stop();
-                isRolling = false;
-            }
-        }
+        float targetVol = moving ? rollingVolume : 0f;
+
+        if (moving && !rollingSource.isPlaying)
+            rollingSource.Play();
+
+        rollingSource.volume = Mathf.Lerp(rollingSource.volume, targetVol, fadeSpeed * Time.deltaTime);
+
+        if (!moving && rollingSource.volume < 0.01f)
+            rollingSource.Stop();
     }
 
-    void HandleHeadRotateSound()
+    void HandleRotation()
     {
-        // Detect turret rotation input (replace if you control turret differently)
         bool rotating = Mathf.Abs(Input.GetAxis("Mouse X")) > 0.1f;
 
-        if (rotating)
-        {
-            if (!isRotating)
-            {
-                loopSource.clip = headRotateSound;
-                loopSource.volume = 0f;
-                loopSource.Play();
-                isRotating = true;
-            }
-            loopSource.volume = Mathf.Lerp(loopSource.volume, 1f, fadeSpeed * Time.deltaTime);
-        }
-        else if (isRotating)
-        {
-            loopSource.volume = Mathf.Lerp(loopSource.volume, 0f, fadeSpeed * Time.deltaTime);
-            if (loopSource.volume < 0.05f)
-            {
-                loopSource.Stop();
-                isRotating = false;
-            }
-        }
+        float targetVol = rotating ? rotateVolume : 0f;
+
+        if (rotating && !rotateSource.isPlaying)
+            rotateSource.Play();
+
+        rotateSource.volume = Mathf.Lerp(rotateSource.volume, targetVol, fadeSpeed * Time.deltaTime);
+
+        if (!rotating && rotateSource.volume < 0.01f)
+            rotateSource.Stop();
     }
 
-    // --- Public API for other scripts ---
-    public void PlayShot() => sfxSource.PlayOneShot(shotSound);
-    public void PlayReload() => sfxSource.PlayOneShot(reloadSound);
-    public void PlayDamage() => sfxSource.PlayOneShot(damageSound);
+    // --- Public API ---
+    public void PlayShot() => sfxSource.PlayOneShot(shotSound, sfxVolume);
+    public void PlayReload() => sfxSource.PlayOneShot(reloadSound, sfxVolume);
+    public void PlayDamage() => sfxSource.PlayOneShot(damageSound, sfxVolume);
 }

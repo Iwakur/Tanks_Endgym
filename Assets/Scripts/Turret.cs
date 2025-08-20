@@ -13,9 +13,7 @@ public class TurretController : MonoBehaviour
     public float maxPitch = 30f;
     public bool lockAndHideCursor = true;
 
-    [Header("Audio")]
-    public AudioSource audioSource;   // attach AudioSource in Inspector
-    public AudioClip rotationSound;   // loopable motor sound
+
     public float minPitchAudio = 0.9f;
     public float maxPitchAudio = 1.1f;
 
@@ -48,6 +46,11 @@ public class TurretController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+        if (!lockAndHideCursor && Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         if (pivot == null || gun == null) return;
 
@@ -73,29 +76,5 @@ public class TurretController : MonoBehaviour
             isRotating = true;
         }
 
-        HandleAudio();
-    }
-
-    void HandleAudio()
-    {
-        if (audioSource == null || rotationSound == null) return;
-
-        if (isRotating)
-        {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.clip = rotationSound;
-                audioSource.loop = true;
-                audioSource.Play();
-            }
-
-            // Optional: add subtle pitch variation depending on movement intensity
-            audioSource.pitch = Mathf.Lerp(minPitchAudio, maxPitchAudio, Random.value);
-        }
-        else
-        {
-            if (audioSource.isPlaying)
-                audioSource.Stop();
-        }
     }
 }
