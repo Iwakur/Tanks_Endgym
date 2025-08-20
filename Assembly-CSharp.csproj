@@ -66,7 +66,9 @@
     <Compile Include="Assets\gownitshe\Shell.cs" />
     <Compile Include="Assets\gownitshe\Camera.cs" />
     <Compile Include="Assets\gownitshe\AimSystem.cs" />
+    <Compile Include="Assets\gownitshe\NewBehaviourScript.cs" />
     <Compile Include="Assets\gownitshe\Turret.cs" />
+    <Compile Include="Assets\gownitshe\menu_scripts\menu_kamera.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
