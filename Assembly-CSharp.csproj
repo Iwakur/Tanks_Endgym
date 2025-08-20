@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Turret.cs" />
+    <Compile Include="Assets\Scripts\menu_scripts\buttons_effect.cs" />
     <Compile Include="Assets\Scripts\menu_scripts\menu_kamera.cs" />
     <Compile Include="Assets\Scripts\menu_scripts\switch_scene.cs" />
     <Compile Include="Assets\Scripts\GunShooter.cs" />
