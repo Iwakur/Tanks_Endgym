@@ -3,20 +3,25 @@ using UnityEngine;
 public class TurretController : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Center of rotation. If left empty, a child named 'Pivot' (case-insensitive) will be used.")]
-    public Transform pivot;   // Hinge for gun elevation
-    public Transform gun;     // The Gun object (child of Pivot)
+    public Transform pivot;   // assign in inspector
+    public Transform gun;     // assign in inspector
 
     [Header("Settings")]
     public float yawSpeed = 200f;     // deg/sec
     public float pitchSpeed = 30f;    // deg/sec
-    public float minPitch = -5f;      // down limit
-    public float maxPitch = 30f;      // up limit
+    public float minPitch = -5f;
+    public float maxPitch = 30f;
     public bool lockAndHideCursor = true;
 
-    private float currentPitch;
+    [Header("Audio")]
+    public AudioSource audioSource;   // attach AudioSource in Inspector
+    public AudioClip rotationSound;   // loopable motor sound
+    public float minPitchAudio = 0.9f;
+    public float maxPitchAudio = 1.1f;
 
-    
+    private float currentPitch;
+    private bool isRotating;
+
     void OnEnable()
     {
         if (lockAndHideCursor)
@@ -46,22 +51,51 @@ public class TurretController : MonoBehaviour
 
         if (pivot == null || gun == null) return;
 
-        // --- YAW (Turret rotation) ---
         float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+        isRotating = false;
+
+        // --- YAW (Turret rotation) ---
         if (Mathf.Abs(mouseX) > Mathf.Epsilon)
         {
             float yaw = mouseX * yawSpeed * Time.deltaTime;
             transform.RotateAround(pivot.position, pivot.up, yaw);
+            isRotating = true;
         }
 
         // --- PITCH (Gun elevation) ---
-        float mouseY = Input.GetAxis("Mouse Y");
         if (Mathf.Abs(mouseY) > Mathf.Epsilon)
         {
             currentPitch -= mouseY * pitchSpeed * Time.deltaTime;
             currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
 
             gun.localRotation = Quaternion.Euler(currentPitch, 0f, 0f);
+            isRotating = true;
+        }
+
+        HandleAudio();
+    }
+
+    void HandleAudio()
+    {
+        if (audioSource == null || rotationSound == null) return;
+
+        if (isRotating)
+        {
+            if (!audioSource.isPlaying)
+            {
+                audioSource.clip = rotationSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+
+            // Optional: add subtle pitch variation depending on movement intensity
+            audioSource.pitch = Mathf.Lerp(minPitchAudio, maxPitchAudio, Random.value);
+        }
+        else
+        {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
         }
     }
 }

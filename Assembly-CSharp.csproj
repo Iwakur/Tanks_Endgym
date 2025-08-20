@@ -62,6 +62,7 @@
     <Compile Include="Assets\gownitshe\TankMovement.cs" />
     <Compile Include="Assets\gownitshe\GunShooter.cs" />
     <Compile Include="Assets\gownitshe\Tank_Mechanics.cs" />
+    <Compile Include="Assets\gownitshe\TankSounds.cs" />
     <Compile Include="Assets\gownitshe\Shell.cs" />
     <Compile Include="Assets\gownitshe\Camera.cs" />
     <Compile Include="Assets\gownitshe\AimSystem.cs" />

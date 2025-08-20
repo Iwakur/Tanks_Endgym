@@ -5,6 +5,7 @@ public class GunShooter : MonoBehaviour
     [Header("References")]
     public Transform muzzle;       // empty object at barrel tip
     public GameObject bulletPrefab;
+    public TankAudio tankAudio;    // drag your TankAudio component here
 
     [Header("Settings")]
     public float bulletForce = 1000f;
@@ -18,6 +19,9 @@ public class GunShooter : MonoBehaviour
         {
             Shoot();
             nextFireTime = Time.time + 1f / fireRate;
+
+            if (tankAudio != null)
+                tankAudio.PlayShot();
         }
     }
 
