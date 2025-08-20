@@ -61,14 +61,14 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Turret.cs" />
     <Compile Include="Assets\Scripts\menu_scripts\menu_kamera.cs" />
+    <Compile Include="Assets\Scripts\menu_scripts\switch_scene.cs" />
     <Compile Include="Assets\Scripts\GunShooter.cs" />
     <Compile Include="Assets\Scripts\TankMovement.cs" />
     <Compile Include="Assets\Scripts\Camera.cs" />
-    <Compile Include="Assets\Scripts\menu_scripts\to_credits.cs" />
     <Compile Include="Assets\Scripts\TankSounds.cs" />
     <Compile Include="Assets\Scripts\menu_scripts\squeak_sound.cs" />
+    <Compile Include="Assets\Scripts\menu_scripts\quit_btn.cs" />
     <Compile Include="Assets\Scripts\Shell.cs" />
-    <Compile Include="Assets\Scripts\menu_scripts\to_menu.cs" />
     <Compile Include="Assets\Scripts\Tank_Mechanics.cs" />
     <Compile Include="Assets\Scripts\AimSystem.cs" />
   </ItemGroup>

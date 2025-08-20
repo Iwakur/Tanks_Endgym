@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class to_credits : MonoBehaviour
+public class switch_scene : MonoBehaviour
 {
     [SerializeField] private string credits; // имя сцены, куда переносить
 
