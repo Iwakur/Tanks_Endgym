@@ -27,7 +27,10 @@ public class GunShooter : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, muzzle.position, muzzle.rotation);
+        // Spawn the bullet rotated 180° on Y
+        Quaternion rotated = muzzle.rotation * Quaternion.Euler(0, 180f, 0);
+        GameObject bullet = Instantiate(bulletPrefab, muzzle.position, rotated);
+
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(muzzle.forward * bulletForce);
     }

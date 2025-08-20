@@ -16,19 +16,14 @@ public class TankController : MonoBehaviour
     private Rigidbody rb;
     private float lastUprightTime;
 
-    // public Transform cameraTarget;
-    // public float cameraSmooth = 5f;
 
     private float currentMoveInput;
-    // private Quaternion smoothedCamRot;
     private float currentTurnInput;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         lastUprightTime = Time.time;
-        // if (cameraTarget != null)
-        //     smoothedCamRot = cameraTarget.rotation;
     }
 
     void Update()
@@ -36,19 +31,6 @@ public class TankController : MonoBehaviour
         HandleMovement();
         HandleFlipRecovery();
 
-        // if (cameraTarget != null)
-        // {
-        //     Quaternion targetRot = transform.rotation;
-
-        //     // Smooth toward tank’s rotation
-        //     smoothedCamRot = Quaternion.Slerp(
-        //         smoothedCamRot,
-        //         targetRot,
-        //         cameraSmooth * Time.deltaTime
-        //     );
-
-        //     cameraTarget.rotation = smoothedCamRot;
-        // }
     }
 
     void HandleMovement()
