@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\Shell.cs" />
     <Compile Include="Assets\Scripts\Tank_Mechanics.cs" />
     <Compile Include="Assets\Scripts\AimSystem.cs" />
+    <Compile Include="Assets\Scripts\bush transparency.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
