@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
+using TMPro; // only if it's TextMeshPro, not old 3D TextMesh
 
 public class TankMechanics : MonoBehaviour
 {
     [Header("Hull")]
     public int hullHP = 300;
     private bool isDestroyed = false;
+    [Header("UI")]
+    public TMP_Text hpText;   // drag your TextMeshPro object here
 
     [Header("Status flags")]
     public bool isOnFire = false;
@@ -28,9 +31,16 @@ public class TankMechanics : MonoBehaviour
     public Transform engineAnchor;   // e.g. where fire should appear
 
 
-
+    void Update()
+    {
+        if (hpText != null)
+        {
+            hpText.text = hullHP.ToString();  // just shows "300", "299", etc.
+        }
+    }
     void Start()
     {
+  
         if (fireEffectPrefab != null && engineAnchor != null)
         {
             fireInstance = Instantiate(fireEffectPrefab, engineAnchor);
