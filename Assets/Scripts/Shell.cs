@@ -13,23 +13,19 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        TankHealth target = collision.gameObject.GetComponentInParent<TankHealth>();
-        if (target != null)
+        ModuleHitbox hitbox = collision.collider.GetComponent<ModuleHitbox>();
+        if (hitbox != null)
         {
-            // play damage sound from the tank, not the bullet
-            TankAudio audio = collision.gameObject.GetComponentInParent<TankAudio>();
-            if (audio != null)
-                audio.PlayDamage();
-
-            target.TakeDamage(damage);
+            hitbox.TakeDamage(damage);
         }
 
         if (explosionPrefab != null)
         {
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(explosion, 3f); // cleanup
+            Destroy(explosion, 3f);
         }
 
         Destroy(gameObject);
     }
+
 }

@@ -12,6 +12,7 @@ public class GunShooter : MonoBehaviour
     public float fireRate = 1f;       // shots per second
     public float reloadTime = 2f;     // seconds to reload
     public int magazineSize = 5;      // how many shots before reload
+    public GameObject muzzleFlashPrefab;
 
     private float nextFireTime = 0f;
     private int currentAmmo;
@@ -57,6 +58,14 @@ public class GunShooter : MonoBehaviour
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(muzzle.forward * bulletForce);
+
+
+        if (muzzleFlashPrefab != null)
+        {
+            GameObject flash = Instantiate(muzzleFlashPrefab, muzzle.position, muzzle.rotation, muzzle);
+            Destroy(flash, 0.3f); // clean up after a short time
+        }
+
     }
 
     System.Collections.IEnumerator Reload()
