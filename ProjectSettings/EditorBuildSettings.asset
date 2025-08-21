@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/massa_kalovaya.unity
     guid: d6f8dee0a00379848a706ad473b682a2
+  - enabled: 1
+    path: Assets/Scenes/Brussels_Park.unity
+    guid: 1a72b465e4085f34cb1ef29b72da70e0
   m_configObjects: {}

@@ -22,7 +22,7 @@ public class ButtonLookAtCursor : MonoBehaviour
         float y = (mousePos.y / Screen.height - 0.5f) * 2f;
 
         // Целевой наклон
-        Quaternion targetRotation = startRotation * Quaternion.Euler(-y * rotationAmount, x * rotationAmount, 0);
+        Quaternion targetRotation = startRotation * Quaternion.Euler(-y * rotationAmount, -x * rotationAmount, 0);
 
         // Плавный поворот
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * smoothSpeed);
