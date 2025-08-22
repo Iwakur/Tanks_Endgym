@@ -9889,6 +9889,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5c2e0716666a4458611c310e8869d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reloadBar: {fileID: 0}
+  reloadText: {fileID: 0}
   muzzle: {fileID: 1037904981}
   bulletPrefab: {fileID: 7885825195005536901, guid: ea2b81891f0876f43a70d0f42cc6933a, type: 3}
   tankAudio: {fileID: 853751502}
@@ -33651,6 +33653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hullHP: 300
+  hpText: {fileID: 0}
   isOnFire: 0
   tracksBroken: 0
   engineDead: 0
