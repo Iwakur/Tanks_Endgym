@@ -1,7 +1,8 @@
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody))]
-public class TankController : MonoBehaviour
+public class TankController : NetworkBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -13,12 +14,16 @@ public class TankController : MonoBehaviour
     [Header("Flip Recovery")]
     public float flipCheckDelay = 3f;
     public float uprightForce = 500f;
+
     private Rigidbody rb;
     private float lastUprightTime;
 
-
     private float currentMoveInput;
     private float currentTurnInput;
+
+    // Mirror sync — server is the boss, updates all clients
+    [SyncVar] private Vector3 syncPosition;
+    [SyncVar] private Quaternion syncRotation;
 
     void Start()
     {
@@ -28,9 +33,20 @@ public class TankController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleFlipRecovery();
+        if (isLocalPlayer) // only our tank reads input
+        {
+            HandleMovement();
+            HandleFlipRecovery();
 
+            // tell server our new state
+            CmdSendTransform(rb.position, rb.rotation);
+        }
+        else
+        {
+            // other players' tanks → follow synced values
+            rb.position = Vector3.Lerp(rb.position, syncPosition, Time.deltaTime * 10f);
+            rb.rotation = Quaternion.Lerp(rb.rotation, syncRotation, Time.deltaTime * 10f);
+        }
     }
 
     void HandleMovement()
@@ -67,5 +83,13 @@ public class TankController : MonoBehaviour
         {
             lastUprightTime = Time.time;
         }
+    }
+
+    // Tell the server our transform
+    [Command]
+    void CmdSendTransform(Vector3 pos, Quaternion rot)
+    {
+        syncPosition = pos;
+        syncRotation = rot;
     }
 }

@@ -5,19 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/game_menu.unity
     guid: fead98017bfd14248866e2f720acec66
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/credits.unity
     guid: 912351204c79cad45a3b2bef3bdfc22d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Iwakur's Folder/Iwakur's_Playgound.unity
     guid: 89489f7b3b5405e43b49a28722fc7280
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/massa_kalovaya.unity
     guid: d6f8dee0a00379848a706ad473b682a2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Brussels_Park.unity
     guid: 1a72b465e4085f34cb1ef29b72da70e0
+  - enabled: 1
+    path: Assets/Scenes/Iwakur's Folder/Iwakur'sMap.unity
+    guid: e372fd2035776264b917623ef8b0fe99
   m_configObjects: {}
